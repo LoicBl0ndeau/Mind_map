@@ -1,35 +1,4 @@
 body
 {
   margin: 0;
-  display: flex;
-}
-
-nav
-{
-  height: 100vh;
-  width: 15vmax; /*Complémentaire avec le width de #mindMap*/
-  background-color: #21252b;
-}
-
-#mindMap
-{
-  width: 85vw; /*Complémentaire avec le width de nav*/
-  background-color: #282c34;
-}
-
-#centre
-{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-}
-
-#title
-{
-  width: 13vw;
-  text-align: center;
-  background-color: #3a3f4b;
-  color: #61afef;
-  border: 0;
 }
