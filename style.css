@@ -84,7 +84,7 @@ input[type="file"] {
 .pars{
   font-family: 'Louis George Cafe Light',Arial,serif;
   color:black;
-  background: white;
+  background: rgb(254,89,93);
   border-radius: 30px;
   position: fixed;
   bottom: 7%;

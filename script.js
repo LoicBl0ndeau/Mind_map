@@ -278,6 +278,7 @@ function carac(i,data){ //fonction qui décode les caractères mal encodé en UT
 
 function recupData(data){ //fonction qui récupère dans la variable mm, le texte, le parent et la génération de l'enfant (degré) de chaque noeud. On leur associe également un identifiant (id) unique.
   var text = false;
+  var img = false;
   var colorbool = false;
   var coloradd = false;
   var id = 0;
@@ -290,6 +291,10 @@ function recupData(data){ //fonction qui récupère dans la variable mm, le text
     else if(data[i] == "/" && data[i+1] == "n" && data[i+2] == "o" && data[i+3] == "d" && data[i+4] == "e"){ //Si on rencontre un node fermant (</node>), on supprimer le dernier élément du tableau ancienPrecedents.
       precedent = ancienPrecedents[ancienPrecedents.length-1];
       ancienPrecedents.pop();
+    }
+
+    else if (data[i] == "i" && data[i+1] == "m" && data[i+2] == "g" && data[i+3] == " " && data[i+4] == "s" && data[i+5] == "r" && data[i+6] == "c"){// si on trouve la syntaxe pour ajouter une img on mets un indicateur en true pour dire qu'une img doit etre recuperer
+      img = true;
     }
 
     else if (data[i] == "C" && data[i+1] == "O" && data[i+2] == "L" && data[i+3] == "O" && data[i+4] == "R"){// si on rencontre le texte color on passe un indicateur de couleur en true
@@ -339,6 +344,24 @@ function recupData(data){ //fonction qui récupère dans la variable mm, le text
       id++;
       text = false;
       coloradd=false; // on repasse coloradd en false pour dire que la couleur a bien été ajouter
+    }
+    if (img == true ){// fonction de recupération de l'image et de renplissage du mm avec ladresse de l'image
+      var lienimg=data[i-1];
+      var j = i;
+      while (data[j]!=">"){
+        lienimg+=data[j];
+        j++;
+      }
+      lienimg +=">"
+      console.log(lienimg);
+
+      mm.push({text: ' '+lienimg, color: color,id: id, precedent: precedent, degre: ancienPrecedents.length}); // on ajoute l'image comme un texte et lorsque ce texte sera lu dans la partie html il sera direcrement associer a la photos correspondante se trouvant dans le fichier de notre site
+      ancienPrecedents.push(precedent);
+      precedent = id;
+      id++;
+
+      img = false; // une fois l'image bien récuperer on remet l'indicateur en false pour dire qu'il ny a plus dimage a récuperer
+
     }
   }
   console.log(mm);
@@ -414,7 +437,8 @@ function deep(parent){ //fonction qui affiche les blocs cliquable en cherchant l
   }
   $('.souschap').on("click",function(){
     if($(this).find('.info').text() == ''){ //Si .info est vide, cela signifie que l'enfant ne possède pas d'enfants.
-      $('.texte').text($(this).text());
+      console.log("here");
+      $('.texte').empty().append($(this).html());// on prepare le texte a mettre dans le post it
       $('.pars').fadeIn(500); //On ouvre le post-it
     }
     else { //Si l'enfant a des enfants
