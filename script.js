@@ -59,6 +59,8 @@ function carac(i,data){ //fonction qui décode les caractères mal encodé en UT
 function recupData(data){ //fonction qui récupère dans la variable mm, le texte, le parent et la génération de l'enfant (degré) de chaque noeud. On leur associe également un identifiant (id) unique.
   var mm = [];
   var text = false;
+  var colorbool = false;
+  var coloradd = false;
   var id = 0;
   var precedent = 0;
   var ancienPrecedents = []; //tableau qui sert à garder en mémoire le chemin à travers tous les parents effectuées pour arriver à l'élement actuel.
@@ -70,7 +72,30 @@ function recupData(data){ //fonction qui récupère dans la variable mm, le text
       precedent = ancienPrecedents[ancienPrecedents.length-1];
       ancienPrecedents.pop();
     }
-    else if(text === true && data[i] == '"'){ //On récupère la phrase
+
+    else if (data[i] == "C" && data[i+1] == "O" && data[i+2] == "L" && data[i+3] == "O" && data[i+4] == "R"){// si on rencontre le texte color on passe un indicateur de couleur en true
+        colorbool=true;
+      }
+
+      if (colorbool==true && data[i]== '"'){// si l'indicateur est en true et que l'on rencontre " on recupere la le code hexadecimal de la couleur
+      changecolor ="#";
+
+      for (var x=0; x<6;x++){
+        changecolor+=data[i+2];
+        i++;
+
+      }// notre couleur est stocker dans changecolor
+
+      console.log(changecolor);
+      colorbool=false; // on repasse notre indicateur en false pour dire que lon a fini de recuperer la couleur
+      coloradd=true;// et on passe un indicateur en true pour dire que l'on doit encore ajouter une couleur a notre objet mm
+
+    }
+
+    else{
+      color="#000000"; // si on a pas de couleur on garde la couleur noir de base
+    }
+   if(text === true && data[i] == '"'){ //On récupère la phrase
       var j = i + 1;
       var phrase = "";
       while(data[j] != '"'){
@@ -84,13 +109,17 @@ function recupData(data){ //fonction qui récupère dans la variable mm, le text
           j++;
         }
       }
-      mm.push({text: phrase, id: id, precedent: precedent, degre: ancienPrecedents.length});
+      if (coloradd ==true){// si on doit ajouter une couleur on recupere changecolor
+          color = changecolor;
+        }
+      mm.push({text: phrase,color: color, id: id, precedent: precedent, degre: ancienPrecedents.length});
       if(data[j+1] != "/"){ //Si l'élément actuel est parent.
         ancienPrecedents.push(precedent);
         precedent = id;
       }
       id++;
       text = false;
+      coloradd=false; // on repasse coloradd en false pour dire que la couleur a bien été ajouter
     }
   }
   console.log(mm);
