@@ -1,5 +1,8 @@
 body
 {
+  background-color: rgb(254,89,93); /* Le fond de la page sera rosé */
+  font-size: 2rem;
+  letter-spacing: 2px;
   margin: 0;
 }
 
@@ -10,9 +13,12 @@ body
   align-items: center;
   justify-content: center;
   font-size: 30px;
+  position: fixed;
   width: 100vw;
+  z-index: 99;
   height: 100vh;
   background-color: rgb(254,89,93);
+  font-family: 'Louis George Cafe Light',Arial,serif;
 }
 
 #drop *
@@ -30,4 +36,161 @@ body
 
 input[type="file"] {
     display: none;
+}
+
+/*paragraphe*/
+p { text-align: justify;}
+.logo{
+  float: left;
+  height: 8vh;
+  width: 8vh;
+  margin-left: 15px;
+  align-self: center;
+}
+.containerMarque
+{
+  align-self: center;
+  text-align: center;
+  width: 100%;
+}
+.marque{
+  margin: 0;
+}
+.tetepage{
+  display: flex;
+  cursor: pointer;
+  text-align: center;
+  font-family: 'Louis George Cafe Light',Arial,serif;
+  background-color: rgb(254,50,80);
+  color:white;
+  width: 100%;
+  height: 10vh;
+  box-shadow: 1px 1px 0.3px black;
+
+
+
+
+}
+
+/*titre principal des differents cours*/
+#titre {
+  font-family: 'Louis George Cafe',Arial,serif;
+  color:white;
+ display:inline-block;
+ padding: 15px 15px 15px 15px;
+ border: 1px white solid;
+ position: absolute;
+ top:40%;
+ transform:translateX(-50%);
+ cursor:pointer;
+
+
+}
+/*post it*/
+.pars{
+  font-family: 'Louis George Cafe Light',Arial,serif;
+  color:black;
+  background: white;
+  border-radius: 30px;
+  position: fixed;
+  bottom: 7%;
+  left: 10%;
+  right:10%;
+  top:7%;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  z-index: 5;
+  word-wrap: break-word;
+  border: 1px black solid;
+  text-align: justify;
+}
+/*boutons du post it*/
+.boutonpostit{
+  font-family: 'Louis George Cafe Light',Arial,serif;
+  font-weight: bold;
+  border: none;
+  background: white;
+  position: fixed;
+  right: 10.5%;
+  top: 10%;
+  cursor:pointer;
+
+}
+
+/*menu des sous chaps*/
+.table {
+  font-family: 'Louis George Cafe',Arial,serif;
+ color:white;
+ text-align: center;
+ grid-column: 2 / 3;
+ margin: 10vh 0;
+}
+
+
+
+/*les sous chaps en block*/
+#containerSousChap{
+  font-family: 'Louis George Cafe Light',Arial,serif;
+  display: none;
+  flex-wrap: wrap;
+  flex-direction:row;
+  justify-content: space-around;
+}
+
+/*titre principal au dessus des sous chap*/
+.haut{
+  font-family: 'Louis George Cafe',Arial,serif;
+  cursor:pointer;
+  color:white;
+  margin-left: 20vw;
+  margin-right: 20vw;
+  padding-top:10vh;
+  padding-bottom:2px;
+  padding-right:5px;
+  display: none;
+  text-align: left;
+  border-bottom: 1px white solid;
+
+
+
+
+}
+/*les blocks sous chap*/
+.souschap{
+  font-family: 'Louis George Cafe Light',Arial,serif;
+  margin:10px;
+  color:white;
+  border: 1px white solid;
+  width:20vmax;
+  height:300px;
+  cursor:pointer;
+  overflow: hidden;
+}
+/*text paragraphe dans les sous chap*/
+.info{
+  font-family: 'Louis George Cafe Light',Arial,serif;
+  font-size:small;
+  padding-left: 10px;
+  padding-right: 10px;
+  text-align: justify;
+
+}
+
+/* police personnalisé*/
+
+@font-face {
+
+  font-family: 'Louis George Cafe Light';
+  src: url('Louis George Cafe Light.ttf');
+
+}
+@font-face {
+font-family: 'Louis George Cafe';
+src: url('Louis George Cafe.ttf')format('truetype');
+}
+@font-face {
+font-family: 'Roboto-Thin';
+src: url('Roboto-Thin.ttf')format('truetype');
 }

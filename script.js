@@ -1,3 +1,6 @@
+var degre = 1;
+var mm = [];
+
 $(document).ready(function(){
   $('#fichier').on("change",function(){ //Quand on importe un fichier.
     var fileReader = new FileReader();
@@ -57,7 +60,6 @@ function carac(i,data){ //fonction qui décode les caractères mal encodé en UT
 }
 
 function recupData(data){ //fonction qui récupère dans la variable mm, le texte, le parent et la génération de l'enfant (degré) de chaque noeud. On leur associe également un identifiant (id) unique.
-  var mm = [];
   var text = false;
   var colorbool = false;
   var coloradd = false;
@@ -86,14 +88,14 @@ function recupData(data){ //fonction qui récupère dans la variable mm, le text
 
       }// notre couleur est stocker dans changecolor
 
-      console.log(changecolor);
+      //console.log(changecolor);
       colorbool=false; // on repasse notre indicateur en false pour dire que lon a fini de recuperer la couleur
       coloradd=true;// et on passe un indicateur en true pour dire que l'on doit encore ajouter une couleur a notre objet mm
 
     }
 
     else{
-      color="#000000"; // si on a pas de couleur on garde la couleur noir de base
+      color="#FFFFFF"; // si on a pas de couleur on garde la couleur noir de base
     }
    if(text === true && data[i] == '"'){ //On récupère la phrase
       var j = i + 1;
@@ -123,4 +125,90 @@ function recupData(data){ //fonction qui récupère dans la variable mm, le text
     }
   }
   console.log(mm);
+  $('#drop').fadeOut(500);
+  design();
+}
+
+function design(){
+  //debut initialisation
+  $('#titre').text(mm[0].text);
+  //fin Initialisation
+  $('#titre').on('click',page2);
+  $('.boutonpostit').on('click',fermer);
+  $('.haut').on('click',retour);
+  $('.tetepage').on('click',function(){
+    degre = 1;
+    retour();
+  });
+}
+
+function page2(){
+  setTimeout(function(){
+    deep(0);
+    $('.haut').fadeIn(500);
+  }, 500);
+  $('#titre').fadeOut(500);
+}
+
+function fermer(){
+  $('.pars').fadeOut(500);
+}
+
+
+function retour(){
+  $('.haut').off();
+  $('#containerSousChap').fadeOut(500);
+  $('.haut').fadeOut(500);
+  var i = 0;
+  var titre = $('.haut').text();
+  while(titre != mm[i].text){
+    i++;
+  }
+  setTimeout(function(){
+    $('.haut').on('click',retour);
+    if(degre == 1){
+      $('#titre').fadeIn(500);
+    }
+    else{
+      degre--;
+      deep(mm[i].precedent);
+    }
+  }, 500);
+}
+
+function deep(parent){
+  $('.haut').text(mm[parent].text).fadeIn(500);
+  $('#containerSousChap').empty();
+  var tailletab = mm.length;
+  for (var i = 0; i < tailletab; i++) {
+    if(mm[i].degre == degre && mm[i].precedent == parent){
+      var sousSousChap = '';
+      for (var j = 0; j < tailletab; j++) {
+        if(mm[j].degre == degre+1 && mm[j].precedent == mm[i].id){
+          sousSousChap += '<p class="info" style="color: '+mm[j].color+';"><br />'+mm[j].text+'</p><!--apercu du sous chap-->';
+        }
+      }
+      var souschap = '<span class="souschap" id="ID'+mm[i].id+'"><!--  contient 1er blocks de sous chap-->'+
+        '<h3 style="color: '+mm[i].color+';">'+mm[i].text+'</h3><!-- titre sous chapitre-->'+
+        sousSousChap+
+        '</span>';
+      $('#containerSousChap').append(souschap).fadeIn(500).css("display","flex");
+    }
+  }
+  $('.souschap').on("click",function(){
+    if($(this).find('.info').text() == ''){
+      $('.texte').text($(this).text());
+      $('.pars').fadeIn(500);
+    }
+    else {
+      $('.souschap').off();
+      degre++;
+      var identifiant = $(this).attr("id").slice(2,$(this).attr("id").length);
+      $('#containerSousChap').fadeOut(500);
+      $('.haut').fadeOut(500);
+      setTimeout(function(){
+        deep(identifiant);
+      }, 500);
+    }
+  });
 }
