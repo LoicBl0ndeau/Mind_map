@@ -38,8 +38,6 @@ input[type="file"] {
     display: none;
 }
 
-/*paragraphe*/
-p { text-align: justify;}
 .logo{
   float: left;
   height: 8vh;
@@ -65,11 +63,7 @@ p { text-align: justify;}
   color:white;
   width: 100%;
   height: 10vh;
-  box-shadow: 1px 1px 0.3px black;
-
-
-
-
+  box-shadow: 0 0 5px black;
 }
 
 /*titre principal des differents cours*/
@@ -157,12 +151,27 @@ p { text-align: justify;}
 
 
 }
+#exporter
+{
+  height: 7vh;
+  align-self: center;
+  margin-right: 10px;
+  color: white;
+  border: 1px solid white;
+  font-family: 'Louis George Cafe Light',Arial,serif;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: rgb(254,50,80);
+}
+
 /*les blocks sous chap*/
 .souschap{
   font-family: 'Louis George Cafe Light',Arial,serif;
   margin:10px;
   color:white;
   border: 1px white solid;
+  background-color: rgba(0,0,0,.05);
+  border-radius: 10px;
   width:20vmax;
   height:300px;
   cursor:pointer;
@@ -178,6 +187,96 @@ p { text-align: justify;}
 
 }
 
+/*debut pdf*/
+.window {
+  display: none;
+  text-align: center;
+  min-width: 21cm;
+  background-color: #bbbbbb;
+}
+
+.header{
+  z-index: 1;
+  position:-webkit-sticky;
+  position : sticky;
+  top: 0;
+  border-left: 5px; border-right: 5px; border-bottom: 5px; border-top: 0;
+  border-color: #cccccc; border-style: none ridge ridge groove;
+  border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;
+  background-color: #dddddd;
+}
+
+.bord-haut {
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: #dddddd;
+}
+
+.paramètres {
+  z-index: 1;
+  width: auto;
+  text-align: center;
+  padding: 10px;
+}
+
+.page {
+  display: inline-block;
+  background-color: white;
+  width: 21cm;
+  /*height: 29.7cm;*/
+  min-height: 29.7cm;
+}
+
+.font {
+  font-family: 'Louis George Cafe Light',Arial,serif;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+#palette {
+  display: flex;
+  position: relative;
+  justify-content: space-around;
+  width : 100px;
+  height : 17px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 3px;
+  border-color: rgba(255, 255, 255, 0.5); border-style: solid;
+  border-radius: 5px;
+}
+
+#palette div
+{
+  display: inline;
+  width : 20%;
+  height : 100%;
+  background-color: inherit;
+}
+#titre1_couleur {
+  border-top-left-radius: 2px; border-bottom-left-radius: 2px;
+}
+#paragraphe_couleur {
+  border-top-right-radius: 2px; border-bottom-right-radius: 2px;
+}
+
+.taille {
+  font-size: 12pt;
+}
+
+.style {
+  font-style: normal;
+}
+
+.police {
+  font-family: monospace;
+}
+
+.emplacement {
+  text-align: left;
+}
+
 /* police personnalisé*/
 
 @font-face {
@@ -189,8 +288,4 @@ p { text-align: justify;}
 @font-face {
 font-family: 'Louis George Cafe';
 src: url('Louis George Cafe.ttf')format('truetype');
-}
-@font-face {
-font-family: 'Roboto-Thin';
-src: url('Roboto-Thin.ttf')format('truetype');
 }

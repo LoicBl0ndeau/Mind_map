@@ -13,22 +13,123 @@
       <label id="boutonFichier" for="fichier">Envoyez votre fichier .mm</label>
       <input type="file" id="fichier" name="fichier" accept=".mm" />
     </div>
-    <header class='tetepage'>
-      <img class = 'logo' src="logo.png" alt="logo" />
-      <span class="containerMarque">
-        <h2 class='marque'> Mind2Sheet</h2>
-      </span>
-    </header>
-    <div style='display:none;' class='pars milieubas'>
-      <input class='boutonpostit' type="button" value="X" />
-      <span class='texte'></span>
+    <div id="windowMap">
+      <header class='tetepage'>
+        <img class = 'logo' src="logo.png" alt="logo" />
+        <span class="containerMarque">
+          <h2 class='marque'> Mind2Sheet</h2>
+        </span>
+        <input type="button" id="exporter" value="Exporter" />
+      </header>
+      <div style='display:none;' class='pars milieubas'>
+        <input class='boutonpostit' type="button" value="X" />
+        <span class='texte'></span>
+      </div>
+      <header class="haut">   TITRE ICI   </header><!-- titre en haut des sous chapitres-->
+      <div class="table milieubas">
+        <div class="tab">
+          <p id="titre">TITRE ICI </p>
+        </div><!-- titre du chapitre-->
+        <div id="containerSousChap"><!-- contient tous les sous chaps--></div>
+      </div>
     </div>
-    <header class="haut">   TITRE ICI   </header><!-- titre en haut des sous chapitres-->
-    <div class="table milieubas">
-      <div class="tab">
-        <p id="titre">TITRE ICI </p>
-      </div><!-- titre du chapitre-->
-      <div id="containerSousChap"><!-- contient tous les sous chaps--></div>
+    <div class="window">
+      <header class="header">
+        <div class="bord-haut">
+          <div id="palette">
+            <div id="titre1_couleur"></div>
+            <div id="titre2_couleur"></div>
+            <div id="sous-titre_couleur"></div>
+            <div id="citation_couleur"></div>
+            <div id="paragraphe_couleur"></div>
+          </div>
+          <button class = "font" id="print">Imprimer</button>
+          <button class="font" id="unExporter">Retour</button>
+        </div>
+        <div class="paramètres">
+          <label for="paramètres" class = "font">
+            Paramètres :
+          </label>
+          <!--<option value=""></option>-->
+          <select class="select font" name="couleur" id="couleur-select">
+            <option value="2">--Couleur--</option>
+            <option value="0">vert</option>
+            <option value="1">bleu</option>
+            <option value="2">noir</option>
+            <option value="3">rouge</option>
+            <option value="4">Office</option>
+          </select>
+          <select class="select font" name="police" id="police-select">
+            <option value="">--Police--</option>
+            <option value="Times">Times</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Georgia">Georgia</option>
+            <option value="serif">serif</option>
+            <option value="Verdana">Verdana</option>
+            <option value="Arial">Arial</option>
+            <option value="Helvetica">Helvetica</option>
+            <option value="sans-serif">sans-serif</option>
+            <option value="Courier">Courier</option>
+            <option value="monospace">monospace</option>
+            <option value="Lucida Console">Lucida Console</option>
+            <option value="cursive">cursive</option>
+            <option value="fantasy">fantasy</option>
+            <option value="emoji">emoji</option>
+            <option value="math">math</option>
+            <option value="fangsong">fangsong</option>
+          </select>
+          <select class="select font" name="taille" id="taille-select">
+            <option value="">--Taille--</option>
+            <option value="5">5</option>
+            <option value="8">8</option>
+            <option value="10">10</option>
+            <option value="12">12</option>
+            <option value="14">14</option>
+            <option value="16">16</option>
+            <option value="20">20</option>
+            <option value="32">32</option>
+          </select>
+          <select class="select font" name="emplacement" id="emplacement-select">
+            <option value="">--Emplacement--</option>
+            <option value="left">Left</option>
+            <option value="center">Center</option>
+            <option value="right">Right</option>
+            <option value="justify">Justify</option>
+          </select>
+          <select class="select font" name="style" id="style-select">
+            <option value="">--Style--</option>
+            <option value="normal">normal</option>
+            <option value="italic">italic</option>
+            <option value="oblique">oblique</option>
+          </select>
+          <select class="select font" name="weight" id="weight-select">
+            <option value="lighter">--Épaisseur--</option>
+            <option value="bold">gras</option>
+            <option value="lighter">sec</option>
+          </select>
+          <select class="select font" name="marge" id="marge-select">
+            <option value="2.5">--Marge--</option>
+            <option value="2.5">Normales(2,5cm)</option>
+            <option value="1.27">Étroites(1,27cm)</option>
+            <option value="5.08">Larges(5,08cm)</option>
+          </select>
+          <select class="select font" name="format" id="format-select">
+            <option value="0">--Format--</option>
+            <option value="0">A4(21×29,7)</option>
+            <option value="1">A3(29,7×42)</option>
+            <option value="2">24×32</option>
+          </select>
+          <select class="select font" name="theme" id="theme-select">
+            <option value="0">--Thème--</option>
+            <option value="0">M2S</option>
+            <option value="1">Gris</option>
+            <option value="2">Bleu</option>
+          </select>
+        </div>
+      </header>
+      <div class="page">
+        <!--le pdf-->
+      </div>
     </div>
   </body>
 </html>

@@ -2,25 +2,242 @@ var degre = 1;
 var mm = [];
 
 $(document).ready(function(){
-  $('#fichier').on("change",function(){ //Quand on importe un fichier.
-    var fileReader = new FileReader();
-    $(fileReader).on("load",function(){ //On attend que le fichier soit intégralement chargé.
-      var data = fileReader.result;  // Il y a dans data les données du fichier encodées en base64
-      var trueData = "";
-      for (var i = 0; i < data.length; i++) { //On purifie les data pour enlever le potentiel texte du début qui explique l'encodage
-        if(data[i] == ","){
-          trueData = "";
-        }
-        else{
-          trueData += data[i];
+  $('#fichier').on("change",chargerFichier); //Quand on importe un fichier.
+  $('#exporter').on("click",pdf);
+});
+
+function pdf(){
+  $('#windowMap').fadeOut(500);
+  setTimeout(function(){
+    //          titre1 | titre2 | sous-titre | citation | paragraphe
+    var vert = ['black','red','#00aa00','#88aa88','#558855'];
+    var bleu = ['black','red','green','#aaaaff','#555588'];
+    var noir = ['black','#222222','#555555','#888888','black'];
+    var rouge = ['black','#ff0000','#aa0000','#ff8888','black'];
+    var office = ['black','red','green','#888888','black'];
+
+    var palette = [vert, bleu, noir, rouge, office];
+    var suite = $('.page').css('overflow');
+
+    var A4 = ['21','29.7'];
+    var A3 = ['29.7','42'];
+    var F24_32 = ['24','32'];
+    var format = [A4, A3, F24_32];
+
+    var marge = 2.5;
+    var width = (format[0][0] - marge*2);
+    var height = (format[0][1] - marge*2);
+
+
+    //               window | head&foot | border
+    var theme_mm = ['#bbbbbb','#fe3250','#ee3250'];
+    var theme_gris = ['#bbbbbb','#dddddd','#cccccc'];
+    var theme_bleu = ['#bbbbbb','#2f55a4','#2f42a4'];
+
+    var theme = [theme_mm, theme_gris, theme_bleu];
+    //Récupération du texte
+    var categories = [
+      {name: 'chapitre', code: '<div class="titre1 couleur police taille emplacement gras">'},
+      {name: 'citation', code: '<div class="citation couleur police taille emplacement style">'},
+      {name: 'titre', code: '<div class="titre2 couleur police taille emplacement gras encadré">'},
+      {name: 'sous_titre', code: '<div class="sous_titre couleur police taille emplacement gras encadré">'},
+      {name: 'paragraphe', code: '<div class="paragraphe couleur police taille emplacement encadré">'}
+    ];
+    $('.page').html('');
+    var index = 0; //variable pour savoir quelles classes vont être appliquées.
+    $('.page').append(categories[index].code+'<p>'+mm[0].text+'</p></div>');
+    index++;
+    var tailletab = mm.length;
+    var parcourir = 1;
+    var idTeste = [0];
+    function afficherCours(parent){ //fonction qui affiche proprement le cours en parcourant tous les blocs.
+      for (var i = 0; i < tailletab; i++) { //on parcours chaque blocs.
+        if(mm[i].degre == parcourir && mm[i].precedent == parent){ //On cherche un enfant de l'argument "parent"
+          var dejaVu = false;
+          for (var j = 0; j < idTeste.length; j++) {
+            if(idTeste[j] == i){
+              dejaVu = true;
+            }
+          }
+          // A partir d'ici, mm[i] est un fils
+          if(dejaVu === false){ //On vérifie si nous avons déjà affiché ce bloc
+            //A partir d'ici, mm[i] est un fils non traité encore
+            idTeste.push(i);
+            $('.page').append(categories[index].code+'<p>'+mm[i].text+'</p></div>'); //On l'affiche
+            var ilEstParent = false;
+            for (var j = 0; j < tailletab; j++) {
+              if(mm[j].degre == parcourir+1 && mm[j].precedent == mm[i].id){ //true si il a un enfant
+                ilEstParent = true;
+              }
+            }
+            if(ilEstParent === true){ //Si il a des enfants, on va les chercher directement.
+              if(index == 4){
+                index = 0;
+              }
+              else{
+                index++;
+              }
+              parcourir++; //On augmente d'un degré
+              afficherCours(i);//On relance la fonction avec comme parent le bloc actuel comme nous savons qu'il possède des enfants.
+            }
+            else{ //Si il n'a pas d'enfants
+              var idDernierEnfant;
+              for (var j = 0; j < tailletab; j++) {
+                if(mm[j].degre == parcourir && mm[j].precedent == parent){
+                  idDernierEnfant = j;
+                }
+              }
+              //console.log(idDernierEnfant);
+              if(idDernierEnfant == i){ //On regarde si on arrive au dernier enfant pour savoir si nous devons maitenant remonter.
+                parcourir--;
+                if(index == 0){
+                  index = 4;
+                }
+                else{
+                  index--;
+                }
+              }
+              afficherCours(parent); //On relance la fonction avec le même argument mais avec un degré réduit de 1. (parcourir--)
+            }
+          }
+          else{ //Si on l'a déjà vu, peut-être que nous devons quand-même remonter plus haut encore.
+            var dernierIdDeSonDegre;
+            for (var j = 0; j < tailletab; j++) {
+              if(mm[j].degre == parcourir && mm[j].precedent == parent){
+                dernierIdDeSonDegre = j;
+              }
+            }
+            //console.log(dernierIdDeSonDegre, i);
+            if(dernierIdDeSonDegre == i){ //Si il est le dernier bloc de son degré, on remonte.
+              parcourir--;
+              if(index == 0){
+                index = 4;
+              }
+              else{
+                index--;
+              }
+              afficherCours(mm[parent].precedent); //on relance donc la fonction avec le parent.
+            }
+          }
         }
       }
-      trueData = atob(trueData); //atob permet de décoder la base64
-      recupData(trueData);
-    });
-    fileReader.readAsDataURL($('#fichier').prop('files')[0]);
+    }
+    afficherCours(0);
+    // initialisation des différents paramètres au lancement
+
+      $('.page').css("width",width+"cm");
+      $('.page').css("min-height",height+"cm");
+      $('.page').css("padding",marge+"cm");
+
+      $('.window').css("background-color",theme[0][0]);
+      $('.bord-haut').css("background-color",theme[0][1]);
+      $('.header').css("border-color",theme[0][2]);
+
+      $('#couleur-select').click(function() {
+
+        $('.titre1.couleur').css("color",palette[$("#couleur-select").val()][0]);
+        $('.titre2.couleur').css("color",palette[$("#couleur-select").val()][1]);
+        $('.sous_titre.couleur').css("color",palette[$("#couleur-select").val()][2]);
+        $('.citation.couleur').css("color",palette[$("#couleur-select").val()][3]);
+        $('.paragraphe.couleur').css("color",palette[$("#couleur-select").val()][4]);
+
+        $('#titre1_couleur').css("background-color",palette[$("#couleur-select").val()][0]);
+        $('#titre2_couleur').css("background-color",palette[$("#couleur-select").val()][1]);
+        $('#sous-titre_couleur').css("background-color",palette[$("#couleur-select").val()][2]);
+        $('#citation_couleur').css("background-color",palette[$("#couleur-select").val()][3]);
+        $('#paragraphe_couleur').css("background-color",palette[$("#couleur-select").val()][4]);
+
+      });
+
+      $('#taille-select').click(function() {
+        //console.log($("#taille-select").val());
+        $('.taille').css("font-size",($("#taille-select").val())+"pt");
+        console.log($('.page').css('overflow'));
+      });
+
+      $('#police-select').click(function() {
+        //console.log($("#police-select").val());
+        $('.police').css("font-family",($("#police-select").val()));
+      });
+
+      $('#style-select').click(function() {
+        //console.log($("#style-select").val());
+        $('.style').css("font-style",($("#style-select").val()));
+      });
+
+      $('#weight-select').click(function() {
+          $('.gras').css("font-weight",($("#weight-select").val()));
+      });
+
+      $('#emplacement-select').click(function() {
+        //console.log($("#emplacement-select").val());
+        $('.emplacement').css("text-align",($("#emplacement-select").val()));
+      });
+
+      $('#marge-select').click(function() {
+        //console.log($("#marge-select").val());
+        marge = $("#marge-select").val();
+        //console.log(marge);
+        width = (format[$("#format-select").val()][0] - marge*2);
+        //console.log(width);
+        height = (format[$("#format-select").val()][1] - marge*2);
+        //console.log(height);
+        $('.page').css("width",width+"cm");
+        $('.page').css("min-height",height+"cm");
+        $('.page').css("padding",marge+"cm");
+      });
+
+      $('#theme-select').click(function() {
+        /*console.log($("#theme-select").val());
+        console.log(theme);
+        console.log(theme[$("#theme-select").val()]);*/
+        $('.window').css("background-color",theme[$("#theme-select").val()][0]);
+        $('.bord-haut').css("background-color",theme[$("#theme-select").val()][1]);
+        $('.header').css("border-color",theme[$("#theme-select").val()][2]);
+      });
+
+      $('#format-select').click(function() {
+        marge = $("#marge-select").val();
+        width = (format[$("#format-select").val()][0] - marge*2);
+        height = (format[$("#format-select").val()][1] - marge*2);
+        $('.page').css("width",width+"cm");
+        $('.page').css("min-height",height+"cm");
+        $('.page').css("padding",marge+"cm");
+        $('.window').css("min-width",width+"cm")
+      });
+      $('#print').on("click",function(){
+        $('.header').css("display","none");
+        window.print();
+        $('.header').css("display","block");
+      });
+      $('#unExporter').on("click",function(){
+        $('.window').fadeOut(500);
+        setTimeout(function(){
+          $('#windowMap').fadeIn(500);
+        }, 500);
+      })
+      $('.window').fadeIn(500);
+  }, 500);
+}
+
+function chargerFichier(){
+  var fileReader = new FileReader();
+  $(fileReader).on("load",function(){ //On attend que le fichier soit intégralement chargé.
+    var data = fileReader.result;  // Il y a dans data les données du fichier encodées en base64
+    var trueData = "";
+    for (var i = 0; i < data.length; i++) { //On purifie les data pour enlever le potentiel texte du début qui explique l'encodage
+      if(data[i] == ","){
+        trueData = "";
+      }
+      else{
+        trueData += data[i];
+      }
+    }
+    trueData = atob(trueData); //atob permet de décoder la base64
+    recupData(trueData);
   });
-});
+  fileReader.readAsDataURL($('#fichier').prop('files')[0]);
+}
 
 function carac(i,data){ //fonction qui décode les caractères mal encodé en UTF-8 par FreeMind
   var code ="";
@@ -129,20 +346,20 @@ function recupData(data){ //fonction qui récupère dans la variable mm, le text
   design();
 }
 
-function design(){
+function design(){ //fonction qui initialise le design en blocs cliquable.
   //debut initialisation
   $('#titre').text(mm[0].text);
   //fin Initialisation
   $('#titre').on('click',page2);
   $('.boutonpostit').on('click',fermer);
   $('.haut').on('click',retour);
-  $('.tetepage').on('click',function(){
+  $('.tetepage:not(#exporter)').on('click',function(){
     degre = 1;
     retour();
   });
 }
 
-function page2(){
+function page2(){ //fonction qui initialise la première page du design en blocs cliquable.
   setTimeout(function(){
     deep(0);
     $('.haut').fadeIn(500);
@@ -155,7 +372,7 @@ function fermer(){
 }
 
 
-function retour(){
+function retour(){ //fonction qui permet de revenir à la première page du design en blocs cliquable.
   $('.haut').off();
   $('#containerSousChap').fadeOut(500);
   $('.haut').fadeOut(500);
@@ -176,38 +393,38 @@ function retour(){
   }, 500);
 }
 
-function deep(parent){
+function deep(parent){ //fonction qui affiche les blocs cliquable en cherchant les bons enfants et les bons petits enfants.
   $('.haut').text(mm[parent].text).fadeIn(500);
   $('#containerSousChap').empty();
   var tailletab = mm.length;
-  for (var i = 0; i < tailletab; i++) {
-    if(mm[i].degre == degre && mm[i].precedent == parent){
+  for (var i = 0; i < tailletab; i++) { //On parcours chaque blocs.
+    if(mm[i].degre == degre && mm[i].precedent == parent){ //Si on trouve un enfant à parent.
       var sousSousChap = '';
       for (var j = 0; j < tailletab; j++) {
         if(mm[j].degre == degre+1 && mm[j].precedent == mm[i].id){
-          sousSousChap += '<p class="info" style="color: '+mm[j].color+';"><br />'+mm[j].text+'</p><!--apercu du sous chap-->';
+          sousSousChap += '<p class="info" style="color: '+mm[j].color+';"><br />'+mm[j].text+'</p><!--apercu du sous chap-->'; //On sait que l'on va avoir un sous-sous-chapitres en plus, donc on le prend en compte.
         }
       }
       var souschap = '<span class="souschap" id="ID'+mm[i].id+'"><!--  contient 1er blocks de sous chap-->'+
         '<h3 style="color: '+mm[i].color+';">'+mm[i].text+'</h3><!-- titre sous chapitre-->'+
-        sousSousChap+
+        sousSousChap+ //sous-sous-chapitres
         '</span>';
-      $('#containerSousChap').append(souschap).fadeIn(500).css("display","flex");
+      $('#containerSousChap').append(souschap).fadeIn(500).css("display","flex"); //On affiche le bloc.
     }
   }
   $('.souschap').on("click",function(){
-    if($(this).find('.info').text() == ''){
+    if($(this).find('.info').text() == ''){ //Si .info est vide, cela signifie que l'enfant ne possède pas d'enfants.
       $('.texte').text($(this).text());
-      $('.pars').fadeIn(500);
+      $('.pars').fadeIn(500); //On ouvre le post-it
     }
-    else {
+    else { //Si l'enfant a des enfants
       $('.souschap').off();
       degre++;
       var identifiant = $(this).attr("id").slice(2,$(this).attr("id").length);
       $('#containerSousChap').fadeOut(500);
       $('.haut').fadeOut(500);
       setTimeout(function(){
-        deep(identifiant);
+        deep(identifiant); //si l'utilisateur clique sur le bloc possédant des enfants, on relance la fonction mais cette fois ci avec ce bloc en tant que parent.
       }, 500);
     }
   });
