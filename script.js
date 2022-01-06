@@ -33,8 +33,14 @@ function pdf(){
     var theme_mm = ['#bbbbbb','#fe3250','#ee3250'];
     var theme_gris = ['#bbbbbb','#dddddd','#cccccc'];
     var theme_bleu = ['#bbbbbb','#2f55a4','#2f42a4'];
+    var theme_purpul = ['#bbbbbb','#884488','#663366'];
+    var theme_amande = ['#bbbbbb','#a2bba3','#829b83'];
+    var theme_gold = ['#bbbbbb','#ffd720','#dfb700'];
+    var theme_kaki = ['#bbbbbb','#879b4e','#94812b'];
+    var theme_clair = ['#bbbbbb','#77b5fe','#7795fe'];
+    
+    var theme = [theme_mm, theme_gris, theme_bleu, theme_purpul, theme_amande, theme_gold, theme_kaki, theme_clair];
 
-    var theme = [theme_mm, theme_gris, theme_bleu];
     //Récupération du texte
     var categories = [
       {name: 'chapitre', code: '<div class="titre1 couleur police taille emplacement gras">'},
