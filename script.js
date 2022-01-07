@@ -229,6 +229,7 @@ function pdf(){
 function chargerFichier(){
   var fileReader = new FileReader();
   $(fileReader).on("load",function(fileLoadedEvent){ //On attend que le fichier soit intégralement chargé.
+    //var data = fileReader.result //Besoin d'un serveur virtuel avec ça
     var data = fileLoadedEvent.target.result;  // Il y a dans data les données du fichier encodées en base64
     var trueData = "";
     for (var i = 0; i < data.length; i++) { //On purifie les data pour enlever le potentiel texte du début qui explique l'encodage
