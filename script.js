@@ -94,7 +94,7 @@ function pdf(){
                 }
               }
               //console.log(idDernierEnfant);
-              if(idDernierEnfant == i){ //On regarde si on arrive au dernier enfant pour savoir si nous devons maitenant remonter.
+              if(idDernierEnfant == i){ //On regarde si on arrive au dernier enfant pour savoir si nous devons maintenant remonter.
                 parcourir--;
                 if(index == 0){
                   index = 4;
@@ -158,7 +158,7 @@ function pdf(){
       $('#taille-select').click(function() {
         //console.log($("#taille-select").val());
         $('.taille').css("font-size",($("#taille-select").val())+"pt");
-        console.log($('.page').css('overflow'));
+        //console.log($('.page').css('overflow'));
       });
 
       $('#police-select').click(function() {

@@ -234,7 +234,11 @@ input[type="file"] {
 .font {
   font-family: 'Louis George Cafe Light',Arial,serif;
   font-weight: bold;
-  font-size: 16px;
+  font-size: 12pt;
+}
+
+.select {
+  font-size: 10pt;
 }
 
 #palette {
