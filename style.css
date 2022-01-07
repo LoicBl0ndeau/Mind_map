@@ -96,6 +96,7 @@ input[type="file"] {
   padding-top: 15px;
   padding-bottom: 15px;
   z-index: 5;
+  overflow-y: scroll;
   word-wrap: break-word;
   border: 1px black solid;
   text-align: justify;
@@ -107,7 +108,7 @@ input[type="file"] {
   border: none;
   background: white;
   position: fixed;
-  right: 10.5%;
+  right: 12%;
   top: 10%;
   cursor:pointer;
 
