@@ -38,7 +38,7 @@ function pdf(){
     var theme_gold = ['#bbbbbb','#ffd720','#dfb700'];
     var theme_kaki = ['#bbbbbb','#879b4e','#94812b'];
     var theme_clair = ['#bbbbbb','#77b5fe','#7795fe'];
-    
+
     var theme = [theme_mm, theme_gris, theme_bleu, theme_purpul, theme_amande, theme_gold, theme_kaki, theme_clair];
 
     //Récupération du texte
@@ -228,8 +228,8 @@ function pdf(){
 
 function chargerFichier(){
   var fileReader = new FileReader();
-  $(fileReader).on("load",function(){ //On attend que le fichier soit intégralement chargé.
-    var data = fileReader.result;  // Il y a dans data les données du fichier encodées en base64
+  $(fileReader).on("load",function(fileLoadedEvent){ //On attend que le fichier soit intégralement chargé.
+    var data = fileLoadedEvent.target.result;  // Il y a dans data les données du fichier encodées en base64
     var trueData = "";
     for (var i = 0; i < data.length; i++) { //On purifie les data pour enlever le potentiel texte du début qui explique l'encodage
       if(data[i] == ","){
