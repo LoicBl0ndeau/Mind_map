@@ -27,10 +27,10 @@ No installations or dependencies are required.
 ### ▶️ Running Locally
 
 1. Clone or download the repository:
-   ```bash
-   git clone https://github.com/LoicBl0ndeau/Mind_map.git
-   cd Mind_map
-````
+```bash
+git clone https://github.com/LoicBl0ndeau/Mind_map.git
+cd Mind_map
+```
 
 2. Open `index.html` in your favorite browser.
 
@@ -47,3 +47,9 @@ No installations or dependencies are required.
 * `Fables.mm` — A sample map of fables.
 * `test.mm` — A secondary test file.
 * `*.jpg/png` — Illustrations and images used in the mind map or UI.
+
+## ⚠️ Disclaimer
+
+> This project was developed by students as part of a learning experience and is no longer actively maintained. It may contain outdated code and potential security vulnerabilities.
+> 
+> **Use only in a local or trusted environment for personal or demonstration purposes. Do not deploy it in production or expose it to the internet without a full security review.**
